@@ -4,6 +4,9 @@ This repo is the official implementation of the paper titled “**Unsupervised H
 ## Abstract
 
 Hyperspectral and Multispectral Image Fusion (HMIF) aims to fuse low-resolution hyperspectral images (LR-HSIs) and high-resolution multispectral images (HR-MSIs) to reconstruct high spatial and high spectral resolution images. Current methods typically apply direct fusion from the two modalities without effective supervision, leading to an incomplete perception of deep modality-complementary information and a limited understanding of inter-modality correlations. To address these issues, we propose a simple yet effective solution for unsupervised HMIF, revealing that modality decoupling is key to improving fusion performance. Specifically, we propose an end-to-end self-supervised \textbf{Mo}dality-Decoupled \textbf{S}patial-\textbf{S}pectral Fusion (\textbf{MossFuse}) framework that decouples shared and complementary information across modalities and aggregates a concise representation of both LR-HSIs and HR-MSIs to reduce modality redundancy. Also, we introduce the subspace clustering loss as a clear guide to decouple modality-shared features from modality-complementary ones. Systematic experiments over multiple datasets demonstrate that our simple and effective approach consistently outperforms the existing HMIF methods while requiring considerably fewer parameters with reduced inference time.
+<div align=center>
+<img src="./img/first.png" >
+</div>
 
 ## Architecture
 
