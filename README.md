@@ -8,13 +8,14 @@ Hyperspectral and Multispectral Image Fusion (HMIF) aims to fuse low-resolution 
 <img src="./img/first.png" >
 </div>
 
+
 ## Architecture
 
 <div align=center>
 <img src="./img/network.png" >
 </div>
 
-## Results Visualization (Real Data)
+## Results Visualization
 
 <div align=center>
 <img src="./img/CAVE.png" >
@@ -26,6 +27,10 @@ Hyperspectral and Multispectral Image Fusion (HMIF) aims to fuse low-resolution 
 
 <div align=center>
 <img src="./img/NTIRE.png" >
+</div>
+
+<div align=center>
+<img src="./img/curve.png" >
 </div>
 ## Evaluation on CAVE：
 
