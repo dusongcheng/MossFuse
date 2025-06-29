@@ -669,7 +669,7 @@ class MossFuse(nn.Module):
         msi_fhsi = self.spectral_down(HR_HSI, srf)
         hsi_fhsi = self.spatial_down(HR_HSI, psf)
 
-        return RGB_E[0], RGB_E[1], HSI_E[0], HSI_E[1], RGB_D, HSI_D, lr_msi_fhsi, lr_msi_fmsi, LR_D, srf, psf, HR_HSI, hsi_fhsi, msi_fhsi
+        return srf, psf, HR_HSI
 
 
 def count_parameters(module):
@@ -686,11 +686,10 @@ if __name__ == '__main__':
     input_tensor2 = torch.rand(2, 31, 16, 16).cuda()
     model = MossFuse().cuda()
     with torch.no_grad():
-        RGB_E0, EGB_E1, HSI_E0, HSI_E1, RGB_D, HSI_D, lr_msi_fhsi, lr_msi_fmsi, LR_D, srf, psf, HR_HSI, hsi_fhsi, msi_fhsi = model(input_tensor1, input_tensor2)
-    print(RGB_D.size())
-    print(HSI_D.size())
+        srf, psf, HR_HSI = model(input_tensor1, input_tensor2)
     print('Parameters number of modelE_MSI is ', sum(param.numel() for param in model.parameters()))
     print(torch.__version__)
+    print(HR_HSI.shape)
 
     # 遍历模型的每个模块并打印参数量
     for name, module in model.named_modules():
@@ -699,15 +698,3 @@ if __name__ == '__main__':
             if name in ['modelE_MSI', 'modelE_HSI', 'modelD_MSI', 'modelD_HSI', 'blind', 'modelD_LR', 'modelD_HR', 'spatial_down', 'spectral_down']:
                 print(f"Module: {name}, Parameters: {params}")
 
-    # input_tensor1 = torch.rand(1, 64, 128, 128).cuda()
-    # input_tensor2 = torch.rand(1, 64, 128, 128).cuda()
-    # model2 = Model_stage2().cuda()
-    # with torch.no_grad():
-    #     HSI = model2((input_tensor1, input_tensor2), (input_tensor1, input_tensor2))
-    # print(HSI.shape)
-
-    # input_tensor1 = torch.rand(1, 31, 128, 128).cuda()
-    # input_tensor2 = torch.rand(1, 31, 128, 128).cuda()
-    # model = Model_stage1().cuda()
-    # lr_msi_fhsi, lr_msi_fmsi = model(input_tensor1, input_tensor2, 0)
-    # print(lr_msi_fhsi.shape)
