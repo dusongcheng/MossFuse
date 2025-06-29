@@ -29,7 +29,7 @@ def validate(val_loader, model, criterion, save, save_path):
             msi, hsi, hsi_g = msi.cuda(), hsi.cuda(), hsi_g.cuda()
             model.eval()
             start_time = time.time()
-            _, _, _, _, _, _, _, _, _, srf, psf, HR_HSI, _, _ = model(msi, hsi)
+            srf, psf, HR_HSI = model(msi, hsi)
             inference_time = inference_time + time.time() - start_time
             show(srf, srf_g, psf, psf_g)
             print('Inferen time of %s: %6f'%(img_name[0], time.time() - start_time))
