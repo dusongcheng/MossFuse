@@ -7,11 +7,14 @@ import hdf5storage as hdf5
 import time
 from utils import Loss_valid, AverageMeter_valid, load_model, show
 from dataset import HyperDatasetTest
-from net import MossFuse
+from MossFuseNet import MossFuse
 from tqdm import tqdm
 import time
 import datetime
 scale = 32
+
+# os.chdir('MossFuse-master')
+
 def generate_psf_srf(scale):
     srf_g = torch.Tensor(hdf5.loadmat('./dataset/resp.mat')['resp']).cuda()
     gaussian_kernel = cv2.getGaussianKernel(scale-1, 2)
@@ -29,7 +32,7 @@ def validate(val_loader, model, criterion, save, save_path):
             msi, hsi, hsi_g = msi.cuda(), hsi.cuda(), hsi_g.cuda()
             model.eval()
             start_time = time.time()
-            srf, psf, HR_HSI = model(msi, hsi)
+            _, _, _, _, _, _, _, _, _, srf, psf, HR_HSI, _, _ = model(msi, hsi)
             inference_time = inference_time + time.time() - start_time
             show(srf, srf_g, psf, psf_g)
             print('Inferen time of %s: %6f'%(img_name[0], time.time() - start_time))
@@ -49,11 +52,10 @@ def validate(val_loader, model, criterion, save, save_path):
 
 if __name__ == "__main__":
     os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-    os.chdir('./MossFuse-master')
-    dataset_root = './dataset/CAVE'
+    dataset_root = './dataset/CAVE/CAVE_Test_Spectral' # Put the test img here.
     model_name = './model/CAVE_32_model.pth'
     save_path = './results'
-    model = MossFuse(dim=48, num_blocks=3, scale=scale)
+    model = MossFuse(dim=48, num_blocks=1, scale=scale)
     model = load_model(model=model, model_name=model_name, model_var='Model_stage1')
     test_dataset = HyperDatasetTest(base_root=dataset_root, scale=scale)
     test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=False, pin_memory=True)

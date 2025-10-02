@@ -236,6 +236,7 @@ class Loss_valid(nn.Module):
         """
         groundTruth = np.transpose(self.label, [1,2,0])
         recovered = np.transpose(self.output, [1,2,0])
+        recovered = np.clip(recovered, 0.00001, 1)
         assert groundTruth.shape == recovered.shape, "Size not match for groundtruth and recovered spectral images"
 
         nom = np.sum(groundTruth * recovered, 2)
