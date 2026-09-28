@@ -8,7 +8,18 @@ from skimage.metrics import peak_signal_noise_ratio as compare_psnr
 from torch.nn.functional import cosine_similarity
 from sewar.full_ref import uqi
 
-
+def cc(img1, img2):
+    eps = torch.finfo(torch.float32).eps
+    """Correlation coefficient for (N, C, H, W) image; torch.float32 [0.,1.]."""
+    N, C, _, _ = img1.shape
+    img1 = img1.reshape(N, C, -1)
+    img2 = img2.reshape(N, C, -1)
+    img1 = img1 - img1.mean(dim=-1, keepdim=True)
+    img2 = img2 - img2.mean(dim=-1, keepdim=True)
+    cc = torch.sum(img1 * img2, dim=-1) / (eps + torch.sqrt(torch.sum(img1 ** 2, dim=-1)) * torch.sqrt(torch.sum(img2**2, dim=-1)))
+    cc = torch.clamp(cc, -1., 1.)
+    return cc.mean()
+    
 def record_loss(loss_csv,epoch, cc_B, cc_D, mse_MSI, mse_HSI, mse_HSI_R, mse_MSI_R, mse_srf, mse_psf):
     """ Record many results."""
     loss_csv.write('{},{},{},{},{},{},{},{},{}\n'.format(epoch, cc_B, cc_D, mse_MSI, mse_HSI, mse_HSI_R, mse_MSI_R, mse_srf, mse_psf))
