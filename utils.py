@@ -26,7 +26,7 @@ def record_loss(loss_csv,epoch, cc_B, cc_D, mse_MSI, mse_HSI, mse_HSI_R, mse_MSI
     loss_csv.flush()    
     loss_csv.close
     
-def show(srf, srf_g, psf, psf_g):
+def show(epoch, srf, srf_g, psf, psf_g):
     srf = np.array(srf.data.cpu())
     srf_g = np.array(srf_g.data.cpu())
     psf = np.array(psf.data.cpu())
